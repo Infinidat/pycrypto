@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 #
-#  setup.py : Distutils setup script
+#  setup.py : setuptools setup script
 #
 #  Part of the Python Cryptography Toolkit
 #
@@ -36,11 +36,11 @@
 
 __revision__ = "$Id$"
 
-from distutils import core
 from distutils.ccompiler import new_compiler
-from distutils.core import Extension, Command
-from distutils.command.build import build
-from distutils.command.build_ext import build_ext
+import setuptools
+from setuptools import Extension, Command
+from setuptools.command.build_ext import build_ext
+import distutils.sysconfig
 import os, sys, re
 import struct
 
@@ -439,8 +439,8 @@ kw = {'name':"pycrypto",
 }
 
 # If we're running Python 2.3, add extra information
-if hasattr(core, 'setup_keywords'):
-    if 'classifiers' in core.setup_keywords:
+if hasattr(setuptools, 'setup_keywords'):
+    if 'classifiers' in setuptools.setup_keywords:
         kw['classifiers'] = [
           'Development Status :: 5 - Production/Stable',
           'License :: Public Domain',
@@ -453,7 +453,7 @@ if hasattr(core, 'setup_keywords'):
           'Programming Language :: Python :: 3',
           ]
 
-core.setup(**kw)
+setuptools.setup(**kw)
 
 def touch(path):
     import os, time
@@ -470,4 +470,4 @@ if (sys.platform == 'win32' and sys.version_info[0] == 3 and
     'build' in sys.argv[1:]):
     PrintErr("\nSecond pass to allow 2to3 to fix nt.py. No cause for alarm.\n")
     touch("./lib/Crypto/Random/OSRNG/nt.py")
-    core.setup(**kw)
+    setuptools.setup(**kw)
